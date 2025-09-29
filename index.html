@@ -45,7 +45,7 @@
             background: #c6c6c6;
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            padding: 40px;
+            padding: 24px;
             max-width: 600px;
             width: 100%;
         }
@@ -53,9 +53,27 @@
         h1 {
             color: #333;
             text-align: center;
-            margin-bottom: 30px;
+            margin: 0;
             font-weight: normal;
-            font-size: 320%;
+            font-size: 500%;
+            font-family: MinecraftTen, 'Arial', sans-serif;
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 220%;
+            font-family: MinecraftTen, 'Arial', sans-serif;
+        }
+        h3 {
+            color: #333;
+            text-align: center;
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 220%;
             font-family: MinecraftTen, 'Arial', sans-serif;
         }
 
@@ -196,11 +214,27 @@
         .hidden {
             display: none;
         }
+
+        .question-image img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            padding-bottom: 2rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>M4M: Mathematics<br/>for Minecrafters</h1>
+        <div id="header" class="header">
+            <h1>M4M:</h1>
+            <h2>Mathematics</h2>
+            <h3>for</h3>
+            <h2>Minecrafters</h2>
+        </div>
 
         <!-- Setup Screen -->
         <div class="setup-screen active">
@@ -214,6 +248,7 @@
 
         <!-- Quiz Screen -->
         <div class="quiz-screen">
+            <div class="question-image" id="question-image"></div>
             <div class="question-number" id="question-number"></div>
             <div class="question-text" id="question-text"></div>
             <input type="number" id="answer-input" placeholder="Enter your answer" />

@@ -15,6 +15,7 @@ let quizState = {
 // Load recipes from recipes.txt
 async function loadRecipes() {
     try {
+        // cf. https://www.minecraftcrafting.info/
         const response = await fetch('recipes.txt');
         const text = await response.text();
 
@@ -22,7 +23,10 @@ async function loadRecipes() {
             .filter(line => line.trim() && line.includes('->'))
             .map(line => {
                 // Parse format: "3 Wheat -> 1 Bread"
-                const parts = line.split('->');
+                const extraParts = line.split('/').map(x => x.trim());
+                const lhs = extraParts[0];
+                const imgsrc = extraParts[1];
+                const parts = lhs.split('->');
                 let ingredientPart = parts[0].trim();
                 if (ingredientPart.endsWith('s')) {
                     ingredientPart = ingredientPart.slice(0, -1);
@@ -36,6 +40,7 @@ async function loadRecipes() {
                     return {
                         ingredientCount: parseInt(ingredientMatch[1]),
                         ingredient: ingredientMatch[2],
+                        imgsrc: imgsrc,
                         resultCount: parseInt(resultMatch[1]),
                         result: resultMatch[2]
                     };
@@ -111,6 +116,7 @@ function displayQuestion() {
 
     document.getElementById('question-number').textContent =
         `Question ${quizState.currentQuestion + 1} of ${quizState.totalQuestions}`;
+    document.getElementById('question-image').innerHTML = `<img src="./assets/${question.recipe.imgsrc}" />`;
     document.getElementById('question-text').innerHTML = question.text.replace(/[?][ ]/g, '?<br/>');
     document.getElementById('answer-input').value = '';
     document.getElementById('answer-input').focus();
@@ -214,6 +220,7 @@ document.getElementById('start-btn').addEventListener('click', async () => {
     }
 
     const mode = document.getElementById('mode-select').value;
+    document.getElementById('header').style.display = "none";
     initializeQuiz(mode);
     showScreen('quiz-screen');
     displayQuestion();
@@ -234,6 +241,7 @@ document.getElementById('answer-input').addEventListener('keypress', (e) => {
 document.getElementById('next-btn').addEventListener('click', nextQuestion);
 
 document.getElementById('retry-btn').addEventListener('click', () => {
+    document.getElementById('header').style.display = "block";
     showScreen('setup-screen');
 });
 

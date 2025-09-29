@@ -32,8 +32,8 @@ A single-page educational quiz application that teaches multiplication and divis
 
 #### Recipe Format
 ```
-X [Material] -> Y [Result]
-Example: 3 Wheat -> 1 Bread
+X [Material] -> Y [Result] / [Image Src Url]
+Example: 3 Wheat -> 1 Bread / craft_bread.png
 ```
 
 #### Recipe Object Structure
@@ -43,6 +43,7 @@ Example: 3 Wheat -> 1 Bread
   ingredient: String,          // Name of ingredient
   resultCount: Number,         // Amount of result produced
   result: String              // Name of crafted item
+  imgSrc: String,             // URL of image to show when recipe shown for question
 }
 ```
 

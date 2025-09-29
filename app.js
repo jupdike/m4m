@@ -58,7 +58,7 @@ function generateQuestion(recipe, mode) {
         const correctAnswer = recipe.ingredientCount * multiplier;
 
         return {
-            text: `I have ${resultQuantity} ${recipe.result}, and ${recipe.ingredientCount} ${recipe.ingredient} make ${recipe.resultCount} ${recipe.result}. How many ${recipe.ingredient} did I need to make these ${resultQuantity} ${recipe.result}? ${resultQuantity} × ${recipe.ingredientCount} ÷ ${recipe.resultCount} = ?`,
+            text: `I have ${resultQuantity} ${recipe.result}, and ${recipe.ingredientCount} ${recipe.ingredient} make ${recipe.resultCount} ${recipe.result}. How many ${recipe.ingredient} did I need? ${resultQuantity} × ${recipe.ingredientCount} = ?`,
             correctAnswer: correctAnswer,
             recipe: recipe
         };

@@ -1,18 +1,27 @@
-1 Log -> 1 Crafting Table
-1 Block of Bamboo -> 2 Bamboo Planks
-1 Rose Bush -> 2 Red Dyes
 2 Iron Ingots -> 1 Shears
+2 Sandstone Slabs -> 1 Decorative Sandstone
+2 Quartz Slabs -> 1 Chiseled Quartz Block
+2 Stone Brick Slab -> 1 Chiseled Stone Brick
 3 Iron Ingots -> 1 Bucket
 3 Wheat -> 1 Bread
-1 Log -> 4 Wood Planks
+3 Copper Ingots -> 1 Lightning Rod
+3 Bricks -> 1 Flower Pot
+4 Wood Planks -> 1 Crafting Table
+4 Snow Balls -> 1 Snow Block
+4 Clay Bricks -> 1 Brick Block
+4 Iron Ingots -> 1 Iron Trapdoor
 5 Iron Ingots -> 1 Iron Helmet
 5 Gold Ingots -> 1 Gold Helmet
 5 Wood Planks -> 1 Boat
 5 Iron Ingots -> 1 Mine Cart
-6 Wood Planks -> 1 Trap Door
+6 Oak Planks -> 1 Oak Trap Door
+6 Spruce Planks -> 1 Spruce Trap Door
+6 Acacia Planks -> 1 Acacia Trap Door
+6 Jungle Planks -> 1 Jungle Trap Door
 7 Iron Ingots -> 1 Cauldron
-7 Iron Ingots -> 1 Iron Leggings
+7 Gold Ingots -> 1 Gold Leggings
 7 Leather -> 1 Horse Armor
+7 Wooden Slabs -> 1 Composter
 8 Wood Planks -> 1 Chest
 8 Cobblestone -> 1 Furnace
 8 Iron Ingots -> 1 Iron Chestplate

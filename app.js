@@ -61,7 +61,7 @@ function generateQuestion(recipe, mode) {
         const correctAnswer = recipe.ingredientCount * multiplier;
 
         return {
-            text: `I have ${resultQuantity} ${recipe.result}, and ${recipe.ingredientCount} ${recipe.ingredient}s make ${recipe.resultCount} ${recipe.result}. How many ${recipe.ingredient}s did I need? ${resultQuantity} × ${recipe.ingredientCount} = ?`,
+            text: `I have ${resultQuantity} ${recipe.result}s, and ${recipe.ingredientCount} ${recipe.ingredient}s make ${recipe.resultCount} ${recipe.result}. How many ${recipe.ingredient}s did I need? ${resultQuantity} × ${recipe.ingredientCount} = ?`,
             correctAnswer: correctAnswer,
             recipe: recipe
         };
@@ -71,7 +71,7 @@ function generateQuestion(recipe, mode) {
         const correctAnswer = recipe.resultCount * multiplier;
 
         return {
-            text: `I have ${ingredientQuantity} ${recipe.ingredient}, and ${recipe.ingredientCount} ${recipe.ingredient}s make ${recipe.resultCount} ${recipe.result}. How many ${recipe.result}s can I make? ${ingredientQuantity} ÷ ${recipe.ingredientCount} = ?`,
+            text: `I have ${ingredientQuantity} ${recipe.ingredient}s, and ${recipe.ingredientCount} ${recipe.ingredient}s make ${recipe.resultCount} ${recipe.result}. How many ${recipe.result}s can I make? ${ingredientQuantity} ÷ ${recipe.ingredientCount} = ?`,
             correctAnswer: correctAnswer,
             recipe: recipe
         };
@@ -111,7 +111,7 @@ function displayQuestion() {
 
     document.getElementById('question-number').textContent =
         `Question ${quizState.currentQuestion + 1} of ${quizState.totalQuestions}`;
-    document.getElementById('question-text').innerHTML = question.text.replace(/[?][ ]/g, '<br/>');
+    document.getElementById('question-text').innerHTML = question.text.replace(/[?][ ]/g, '?<br/>');
     document.getElementById('answer-input').value = '';
     document.getElementById('answer-input').focus();
 
@@ -148,7 +148,6 @@ function checkAnswer() {
     // Hide submit button, show next button
     document.getElementById('submit-btn').classList.add('hidden');
     document.getElementById('next-btn').classList.remove('hidden');
-    document.getElementById('answer-input').disabled = true;
 }
 
 // Move to next question or show results
@@ -156,7 +155,6 @@ function nextQuestion() {
     quizState.currentQuestion++;
 
     if (quizState.currentQuestion < quizState.totalQuestions) {
-        document.getElementById('answer-input').disabled = false;
         displayQuestion();
     } else {
         showResults();

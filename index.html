@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M4M: Mathematics for Minecrafters</title>
     <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('fonts/MinecraftRegular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('fonts/MinecraftBold.otf') format('opentype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'MinecraftTen';
+            src: url('fonts/MinecraftTen.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,8 +32,8 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Minecraft', 'Arial', sans-serif;
+            background: url('assets/bg-screenshot.png') center/cover no-repeat;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -22,7 +42,7 @@
         }
 
         .container {
-            background: white;
+            background: #c6c6c6;
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             padding: 40px;
@@ -34,7 +54,9 @@
             color: #333;
             text-align: center;
             margin-bottom: 30px;
-            font-size: 28px;
+            font-weight: normal;
+            font-size: 320%;
+            font-family: MinecraftTen, 'Arial', sans-serif;
         }
 
         .setup-screen, .quiz-screen, .results-screen {
@@ -60,6 +82,7 @@
             font-size: 16px;
             margin-bottom: 20px;
             cursor: pointer;
+            font-family: Minecraft, 'Arial', sans-serif;
         }
 
         button {
@@ -73,6 +96,11 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s;
+            font-family: Minecraft, 'Arial', sans-serif;
+        }
+
+        input[type="number"] {
+            font-family: Minecraft, 'Arial', sans-serif;
         }
 
         button:hover {
@@ -84,13 +112,14 @@
         }
 
         .question-text {
-            background: #f8f9fa;
+            background: #555;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
             font-size: 18px;
             line-height: 1.6;
-            color: #333;
+            color: white;
+            text-shadow: black 2px 2px;
         }
 
         .question-number {
@@ -171,7 +200,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>M4M: Mathematics for Minecrafters</h1>
+        <h1>M4M: Mathematics<br/>for Minecrafters</h1>
 
         <!-- Setup Screen -->
         <div class="setup-screen active">

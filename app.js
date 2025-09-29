@@ -23,7 +23,10 @@ async function loadRecipes() {
             .map(line => {
                 // Parse format: "3 Wheat -> 1 Bread"
                 const parts = line.split('->');
-                const ingredientPart = parts[0].trim();
+                let ingredientPart = parts[0].trim();
+                if (ingredientPart.endsWith('s')) {
+                    ingredientPart = ingredientPart.slice(0, -1);
+                }
                 const resultPart = parts[1].trim();
 
                 const ingredientMatch = ingredientPart.match(/(\d+)\s+(.+)/);
@@ -58,7 +61,7 @@ function generateQuestion(recipe, mode) {
         const correctAnswer = recipe.ingredientCount * multiplier;
 
         return {
-            text: `I have ${resultQuantity} ${recipe.result}, and ${recipe.ingredientCount} ${recipe.ingredient} make ${recipe.resultCount} ${recipe.result}. How many ${recipe.ingredient} did I need? ${resultQuantity} × ${recipe.ingredientCount} = ?`,
+            text: `I have ${resultQuantity} ${recipe.result}, and ${recipe.ingredientCount} ${recipe.ingredient}s make ${recipe.resultCount} ${recipe.result}. How many ${recipe.ingredient}s did I need? ${resultQuantity} × ${recipe.ingredientCount} = ?`,
             correctAnswer: correctAnswer,
             recipe: recipe
         };
@@ -68,7 +71,7 @@ function generateQuestion(recipe, mode) {
         const correctAnswer = recipe.resultCount * multiplier;
 
         return {
-            text: `I have ${ingredientQuantity} ${recipe.ingredient}, and ${recipe.ingredientCount} ${recipe.ingredient} make ${recipe.resultCount} ${recipe.result}. How many ${recipe.result} can I make? ${ingredientQuantity} ÷ ${recipe.ingredientCount} = ?`,
+            text: `I have ${ingredientQuantity} ${recipe.ingredient}, and ${recipe.ingredientCount} ${recipe.ingredient}s make ${recipe.resultCount} ${recipe.result}. How many ${recipe.result}s can I make? ${ingredientQuantity} ÷ ${recipe.ingredientCount} = ?`,
             correctAnswer: correctAnswer,
             recipe: recipe
         };
@@ -108,7 +111,7 @@ function displayQuestion() {
 
     document.getElementById('question-number').textContent =
         `Question ${quizState.currentQuestion + 1} of ${quizState.totalQuestions}`;
-    document.getElementById('question-text').textContent = question.text;
+    document.getElementById('question-text').innerHTML = question.text.replace(/[?][ ]/g, '<br/>');
     document.getElementById('answer-input').value = '';
     document.getElementById('answer-input').focus();
 

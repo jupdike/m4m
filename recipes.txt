@@ -1,0 +1,23 @@
+1 Log -> 1 Crafting Table
+1 Block of Bamboo -> 2 Bamboo Planks
+1 Rose Bush -> 2 Red Dyes
+2 Iron Ingots -> 1 Shears
+3 Iron Ingots -> 1 Bucket
+3 Wheat -> 1 Bread
+1 Log -> 4 Wood Planks
+5 Iron Ingots -> 1 Iron Helmet
+5 Gold Ingots -> 1 Gold Helmet
+5 Wood Planks -> 1 Boat
+5 Iron Ingots -> 1 Mine Cart
+6 Wood Planks -> 1 Trap Door
+7 Iron Ingots -> 1 Cauldron
+7 Iron Ingots -> 1 Iron Leggings
+7 Leather -> 1 Horse Armor
+8 Wood Planks -> 1 Chest
+8 Cobblestone -> 1 Furnace
+8 Iron Ingots -> 1 Iron Chestplate
+8 Gold Ingots -> 1 Gold Chestplate
+9 Gold Ingots -> 1 Gold Block
+9 Iron Ingots -> 1 Iron Block
+9 Redstone Dust -> 1 Redstone Block
+9 Wheat -> 1 Hay Bale

@@ -2,6 +2,7 @@
 
 // Global state
 let recipes = [];
+let addRecipes = [];
 let quizState = {
     mode: 'multiply',
     currentQuestion: 0,
@@ -12,44 +13,51 @@ let quizState = {
     score: 0
 };
 
+function textBlockToRecipesArray(text) {
+    return text.split('\n')
+        .filter(line => line.trim() && line.includes('->'))
+        .map(line => {
+            // Parse format: "3 Wheat -> 1 Bread"
+            const extraParts = line.split('/').map(x => x.trim());
+            const lhs = extraParts[0];
+            const imgsrc = extraParts[1];
+            const parts = lhs.split('->');
+            let ingredientPart = parts[0].trim();
+            if (ingredientPart.endsWith('s')) {
+                ingredientPart = ingredientPart.slice(0, -1);
+            }
+            const resultPart = parts[1].trim();
+
+            const ingredientMatch = ingredientPart.match(/(\d+)\s+(.+)/);
+            const resultMatch = resultPart.match(/(\d+)\s+(.+)/);
+
+            if (ingredientMatch && resultMatch) {
+                return {
+                    ingredientCount: parseInt(ingredientMatch[1]),
+                    ingredient: ingredientMatch[2],
+                    imgsrc: imgsrc,
+                    resultCount: parseInt(resultMatch[1]),
+                    result: resultMatch[2]
+                };
+            }
+            return null;
+        })
+        .filter(recipe => recipe !== null);
+}
+
 // Load recipes from recipes.txt
 async function loadRecipes() {
     try {
         // cf. https://www.minecraftcrafting.info/
         const response = await fetch('recipes.txt');
         const text = await response.text();
-
-        recipes = text.split('\n')
-            .filter(line => line.trim() && line.includes('->'))
-            .map(line => {
-                // Parse format: "3 Wheat -> 1 Bread"
-                const extraParts = line.split('/').map(x => x.trim());
-                const lhs = extraParts[0];
-                const imgsrc = extraParts[1];
-                const parts = lhs.split('->');
-                let ingredientPart = parts[0].trim();
-                if (ingredientPart.endsWith('s')) {
-                    ingredientPart = ingredientPart.slice(0, -1);
-                }
-                const resultPart = parts[1].trim();
-
-                const ingredientMatch = ingredientPart.match(/(\d+)\s+(.+)/);
-                const resultMatch = resultPart.match(/(\d+)\s+(.+)/);
-
-                if (ingredientMatch && resultMatch) {
-                    return {
-                        ingredientCount: parseInt(ingredientMatch[1]),
-                        ingredient: ingredientMatch[2],
-                        imgsrc: imgsrc,
-                        resultCount: parseInt(resultMatch[1]),
-                        result: resultMatch[2]
-                    };
-                }
-                return null;
-            })
-            .filter(recipe => recipe !== null);
-
+        recipes = textBlockToRecipesArray(text);
         console.log(`Loaded ${recipes.length} recipes`);
+
+        const response2 = await fetch('add-recipes.txt');
+        const text2 = await response2.text();
+        addRecipes = textBlockToRecipesArray(text2);
+        console.log(`Loaded ${addRecipes.length} addition/substraction recipes`);
     } catch (error) {
         console.error('Error loading recipes:', error);
         alert('Failed to load recipes. Please ensure recipes.txt is in the same directory.');
@@ -70,7 +78,7 @@ function generateQuestion(recipe, mode) {
             correctAnswer: correctAnswer,
             recipe: recipe
         };
-    } else {
+    } else if (mode == 'divide') {
         // Division: Given ingredients, calculate craftable items
         const ingredientQuantity = recipe.ingredientCount * multiplier;
         const correctAnswer = recipe.resultCount * multiplier;
@@ -79,6 +87,59 @@ function generateQuestion(recipe, mode) {
             text: `I have ${ingredientQuantity} ${recipe.ingredient}s, and ${recipe.ingredientCount} ${recipe.ingredient}s make ${recipe.resultCount} ${recipe.result}. How many ${recipe.result}s can I make? ${ingredientQuantity} ÷ ${recipe.ingredientCount} = ?`,
             correctAnswer: correctAnswer,
             recipe: recipe
+        };
+    }
+}
+
+// Function to extend Array prototype for random choice
+Array.prototype.chooseOneRandom = function() {
+    return this[Math.floor(Math.random() * this.length)];
+};
+
+// Generate addition and subtraction questions
+function getAddSubQuestions(mode, totalQuestions) {
+    const questions = [];
+    for (let i = 0; i < totalQuestions; i++) {
+        questions.push(getAddSubQuestion(mode));
+    }
+    return questions;
+}
+function getResultText(recipe) {
+    if (recipe.resultCount > 1) {
+        return `some ${recipe.result}`.replace(/ss and/g, 's and').replace(/ss./g, 's.');
+    }
+    if ('aeiou'.includes(recipe.result[0].toLowerCase())) {
+        return `an ${recipe.result}`;
+    }
+    return `a ${recipe.result}`;
+}
+
+function getAddSubQuestion(mode) {
+    const isAddition = mode.startsWith('add');
+    if (mode === 'add10' || mode === 'add20') {
+        // Addition question
+        let numberLeft, numberRight, leftRecipe, rightRecipe, numberTotal, correctAnswer;
+        const maxNumber = mode.endsWith('20') ? 18 : 10; // technically up to 18 for addition to stay within 20
+        do {
+            numberTotal = Math.floor(Math.random() * (maxNumber - 1)) + 2; // Random 2 to maxNumber
+            console.log("numberTotal:", numberTotal);
+            numberLeft = Math.floor(Math.random() * (numberTotal - 1)) + 1; // Random 1 to numberTotal-1
+            console.log("numberLeft:", numberLeft);
+            numberRight = numberTotal - numberLeft;
+            console.log("numberRight:", numberRight);
+            correctAnswer = isAddition ? numberTotal : numberLeft; // TODO fix this for subtraction
+            leftRecipe = addRecipes.filter(r => r.ingredientCount === numberLeft).chooseOneRandom();
+            console.log("leftRecipe:", leftRecipe);
+            rightRecipe = addRecipes.filter(r => r.ingredientCount === numberRight).chooseOneRandom();
+        } while (!leftRecipe || !rightRecipe || leftRecipe === rightRecipe);
+        console.log("rightRecipe:", rightRecipe);
+        let leftResult = getResultText(leftRecipe);
+        let rightResult = getResultText(rightRecipe);
+        return {
+            text: `I want to make ${leftResult} and ${rightResult}. I need ${leftRecipe.ingredientCount} ${leftRecipe.ingredient}s and ${rightRecipe.ingredientCount} ${rightRecipe.ingredient}s. How many total ${leftRecipe.ingredient}s do I need? ${numberLeft} + ${numberRight} = ?`.replace(/1 Iron Ingots/g, '1 Iron Ingot'),
+            correctAnswer: correctAnswer,
+            recipe: leftRecipe,
+            recipe2: rightRecipe
         };
     }
 }
@@ -92,13 +153,19 @@ function initializeQuiz(mode) {
     quizState.userAnswers = [];
     quizState.correctAnswers = [];
 
-    // Select random recipes for the quiz
-    const shuffledRecipes = [...recipes].sort(() => Math.random() - 0.5);
-    const selectedRecipes = shuffledRecipes.slice(0, quizState.totalQuestions);
+    if (mode === 'multiply' || mode === 'divide') {
+        // Select random recipes for the quiz
+        const shuffledRecipes = [...recipes].sort(() => Math.random() - 0.5);
+        const selectedRecipes = shuffledRecipes.slice(0, quizState.totalQuestions);
 
-    // Generate questions
-    quizState.questions = selectedRecipes.map(recipe => generateQuestion(recipe, mode));
-    quizState.correctAnswers = quizState.questions.map(q => q.correctAnswer);
+        // Generate questions
+        quizState.questions = selectedRecipes.map(recipe => generateQuestion(recipe, mode));
+        quizState.correctAnswers = quizState.questions.map(q => q.correctAnswer);
+    }
+    else if (mode === 'add10' || mode === 'add20' || mode === 'sub10' || mode === 'sub20') {
+        quizState.questions = getAddSubQuestions(mode, quizState.totalQuestions);
+        quizState.correctAnswers = quizState.questions.map(q => q.correctAnswer);
+    }
 }
 
 // Show specific screen
@@ -116,7 +183,11 @@ function displayQuestion() {
 
     document.getElementById('question-number').textContent =
         `Question ${quizState.currentQuestion + 1} of ${quizState.totalQuestions}`;
-    document.getElementById('question-image').innerHTML = `<img src="./assets/${question.recipe.imgsrc}" />`;
+    let imgHtml = `<img src="./assets/${question.recipe.imgsrc}" />`;
+    if (question.recipe2) {
+        imgHtml += `<img src="./assets/${question.recipe2.imgsrc}" />`;
+    }
+    document.getElementById('question-image').innerHTML = imgHtml;
     document.getElementById('question-text').innerHTML = question.text.replace(/[?][ ]/g, '?<br/>');
     document.getElementById('answer-input').value = '';
     document.getElementById('answer-input').focus();

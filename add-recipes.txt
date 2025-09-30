@@ -1,0 +1,22 @@
+1 Iron Ingot -> 1 Shield / craft_shield.png
+1 Iron Ingot -> 1 Flint & Steel / craft_flintandsteel.png
+1 Iron Ingot -> 1 Iron Shovel / craft_shovels.gif
+1 Iron Ingot -> 1 Crossbow / craft_crossbow.png
+2 Iron Ingots -> 1 Iron Sword / craft_swords.gif
+2 Iron Ingots -> 1 Iron Hoe / craft_hoes.gif
+2 Iron Ingots -> 1 Shears / craft_shears.png
+3 Iron Ingots -> 1 Iron Pickaxe / craft_pickaxes.gif
+3 Iron Ingots -> 1 Iron Axe / craft_axes.gif
+3 Iron Ingots -> 1 Bucket / craft_bucket.png
+4 Iron Ingots -> 1 Compass / craft_compass.png
+4 Iron Ingots -> 1 Iron Boots / craft_boots.gif
+4 Iron Ingots -> 1 Iron Trapdoor / craft_irontrapdoor.png
+5 Iron Ingots -> 1 Iron Helmet / craft_helmets.gif
+5 Iron Ingots -> 1 Minecart / craft_minecart.png
+6 Iron Ingots -> 16 Iron Bars / craft_ironbars.png
+6 Iron Ingots -> 3 Iron Doors / craft_doors.gif
+6 Iron Ingots -> 16 Rails / craft_tracks.png
+7 Iron Ingots -> 1 Cauldron / craft_cauldron.png
+7 Iron Ingots -> 1 Iron Leggings / craft_leggings.gif
+8 Iron Ingots -> 1 Iron Chestplate / craft_chestplates.gif
+9 Iron Ingots -> 1 Iron Block / craft_ironblock.jpg

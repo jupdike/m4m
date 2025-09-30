@@ -115,31 +115,39 @@ function getResultText(recipe) {
 }
 
 function getAddSubQuestion(mode) {
-    const isAddition = mode.startsWith('add');
+    let numberLeft, numberRight, leftRecipe, rightRecipe, numberTotal, correctAnswer;
+    const maxNumber = mode.endsWith('20') ? 18 : 10; // technically up to 18 for addition to stay within 20
+    do {
+        numberTotal = Math.floor(Math.random() * (maxNumber - 1)) + 2; // Random 2 to maxNumber
+        console.log("numberTotal:", numberTotal);
+        numberLeft = Math.floor(Math.random() * (numberTotal - 1)) + 1; // Random 1 to numberTotal-1
+        console.log("numberLeft:", numberLeft);
+        numberRight = numberTotal - numberLeft;
+        console.log("numberRight:", numberRight);
+        leftRecipe = addRecipes.filter(r => r.ingredientCount === numberLeft).chooseOneRandom();
+        console.log("leftRecipe:", leftRecipe);
+        rightRecipe = addRecipes.filter(r => r.ingredientCount === numberRight).chooseOneRandom();
+    } while (!leftRecipe || !rightRecipe || leftRecipe === rightRecipe);
+    console.log("rightRecipe:", rightRecipe);
     if (mode === 'add10' || mode === 'add20') {
-        // Addition question
-        let numberLeft, numberRight, leftRecipe, rightRecipe, numberTotal, correctAnswer;
-        const maxNumber = mode.endsWith('20') ? 18 : 10; // technically up to 18 for addition to stay within 20
-        do {
-            numberTotal = Math.floor(Math.random() * (maxNumber - 1)) + 2; // Random 2 to maxNumber
-            console.log("numberTotal:", numberTotal);
-            numberLeft = Math.floor(Math.random() * (numberTotal - 1)) + 1; // Random 1 to numberTotal-1
-            console.log("numberLeft:", numberLeft);
-            numberRight = numberTotal - numberLeft;
-            console.log("numberRight:", numberRight);
-            correctAnswer = isAddition ? numberTotal : numberLeft; // TODO fix this for subtraction
-            leftRecipe = addRecipes.filter(r => r.ingredientCount === numberLeft).chooseOneRandom();
-            console.log("leftRecipe:", leftRecipe);
-            rightRecipe = addRecipes.filter(r => r.ingredientCount === numberRight).chooseOneRandom();
-        } while (!leftRecipe || !rightRecipe || leftRecipe === rightRecipe);
-        console.log("rightRecipe:", rightRecipe);
         let leftResult = getResultText(leftRecipe);
         let rightResult = getResultText(rightRecipe);
+        correctAnswer = numberTotal;
         return {
             text: `I want to make ${leftResult} and ${rightResult}. I need ${leftRecipe.ingredientCount} ${leftRecipe.ingredient}s and ${rightRecipe.ingredientCount} ${rightRecipe.ingredient}s. How many total ${leftRecipe.ingredient}s do I need? ${numberLeft} + ${numberRight} = ?`.replace(/1 Iron Ingots/g, '1 Iron Ingot'),
             correctAnswer: correctAnswer,
             recipe: leftRecipe,
             recipe2: rightRecipe
+        };
+    } else if (mode === 'sub10' || mode === 'sub20') {
+        let leftResult = getResultText(leftRecipe);
+        let rightResult = getResultText(rightRecipe);
+        correctAnswer = numberLeft;
+        return {
+            text_old: `I made ${leftResult} using ${leftRecipe.ingredientCount} ${leftRecipe.ingredient}s. Then I used ${rightRecipe.ingredientCount} of those ${leftRecipe.ingredient}s to make ${rightResult}. How many ${leftRecipe.ingredient}s do I have left? ${numberLeft} - ${numberRight} = ?`.replace(/1 Iron Ingots/g, '1 Iron Ingot'),
+            text: `I started with ${numberTotal} ${leftRecipe.ingredient}s. I used ${rightRecipe.ingredientCount} of those ${leftRecipe.ingredient}s to make ${rightResult}. How many ${leftRecipe.ingredient}s do I have left? ${numberTotal} - ${numberRight} = ?`.replace(/1 Iron Ingots/g, '1 Iron Ingot'),
+            correctAnswer: correctAnswer,
+            recipe: rightRecipe
         };
     }
 }
